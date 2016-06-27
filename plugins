@@ -1,0 +1,8 @@
+[e600917@ix-automata01-px vimfiles]$ ls -l ~/.vim/bundle/
+total 24
+drwxr-xr-x.  6 e600917 e600917 4096 Jun 22 16:05 ctrlp.vim
+drwxr-xr-x.  6 e600917 e600917 4096 Apr 29  2015 Gundo
+drwxr-xr-x. 10 e600917 e600917 4096 Jun 22 16:09 jedi-vim
+drwxr-xr-x.  9 e600917 e600917 4096 Feb 17  2015 nerdtree
+drwxr-xr-x.  7 e600917 e600917 4096 Jun 27 07:59 vim-airline
+drwxr-xr-x.  5 e600917 e600917 4096 Jun 27 08:07 vim-fugitive
