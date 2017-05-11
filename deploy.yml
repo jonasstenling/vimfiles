@@ -1,0 +1,87 @@
+---
+- name: Deploy Vim with ultra settings
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+    - name: Create ~/.vim directory
+      file:
+        path: ~/.vim
+        state: directory
+    - name: Create ~/.vim/autoload directory
+      file:
+        path: ~/.vim/autoload
+        state: directory
+    - name: Create ~/.vim/colors directory
+      file:
+        path: ~/.vim/colors
+        state: directory
+    - name: Create ~/.vim/bundle directory
+      file:
+        path: ~/.vim/bundle
+        state: directory
+    - name: Copy colorscheme
+      copy:
+        src: wombat256mod.vim
+        dest: ~/.vim/colors/wombat256mod.vim
+    - name: Copy vimrc
+      copy:
+        src: vimrc
+        dest: ~/.vim/vimrc
+    - name: Install pathogen
+      get_url:
+        url: https://tpo.pe/pathogen.vim
+        dest: ~/.vim/autoload/pathogen.vim
+    - name: Install jedi-vim
+      git:
+        repo: https://github.com/davidhalter/jedi-vim.git
+        dest: ~/.vim/bundle/jedi-vim
+        clone: yes
+    - name: Install vim-airline
+      git:
+        repo: https://github.com/vim-airline/vim-airline.git
+        dest: ~/.vim/bundle/vim-airline
+        clone: yes
+    - name: Install vim-airline-themes
+      git:
+        repo: https://github.com/vim-airline/vim-airline-themes.git
+        dest: ~/.vim/bundle/vim-airline-themes
+        clone: yes
+    - name: Install syntastic
+      git:
+        repo: https://github.com/vim-syntastic/syntastic.git
+        dest: ~/.vim/bundle/syntastic
+        clone: yes
+    - name: Install fugitive
+      git:
+        repo: https://github.com/tpope/vim-fugitive.git
+        dest: ~/.vim/bundle/fugitive
+        clone: yes
+    - name: Install vim-jinja
+      git:
+        repo: https://github.com/lepture/vim-jinja.git
+        dest: ~/.vim/bundle/vim-jinja
+        clone: yes
+    - name: Install NERDTree
+      git:
+        repo: https://github.com/scrooloose/nerdtree.git
+        dest: ~/.vim/bundle/nerdtree
+        clone: yes
+    - name: Check if patched SourceCode Pro font is installed
+      stat:
+        path: ~/.local/share/fonts/Source Code Pro for Powerline.otf
+      register: fonts
+    - name: Get powerline fonts
+      git:
+        repo: https://github.com/powerline/fonts.git
+        dest: /tmp/fonts
+        clone: yes
+      when: fonts.stat.exists == False
+    - name: Install powerline fonts
+      command: /tmp/fonts/install.sh
+      when: fonts.stat.exists == False
+    - name: Remove temporary font installation directory
+      file:
+        state: absent
+        path: /tmp/fonts
+      when: fonts.stat.exists == False
