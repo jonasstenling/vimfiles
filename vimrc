@@ -10,6 +10,8 @@ execute pathogen#infect()
 " disable vi compatibility
 set nocompatible
 " autocmds
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " set tabs for yaml
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 " automatic reloading of .vimrc
@@ -75,7 +77,9 @@ set fo+=j               " Remove a comment leader when joining comment lines.
 " When you want to paste large blocks of code into vim, press F2 before you
 " paste. At the bottom you should see ``-- INSERT (paste) --``.
 set pastetoggle=<F2>
-set clipboard=unnamedplus
+" Uncomment to automatically yank to system clipboard.
+" I prefer to do it manually when needed with "+y
+" set clipboard=unnamedplus
 
 " Make searching better
 set ignorecase    " case insensitive searching (unless specified)
@@ -129,7 +133,7 @@ noremap <silent> - <C-W>-
 " Rebind <Leader> key
 let mapleader = ","
 " leader macros
-noremap <Leader>W :%s/\s\+$//<cr>:let @/=''<CR> " delete trailing whitespace
+noremap <Leader>W :call <SID>StripTrailingWhiteSpaces()<CR>
 vnoremap <Leader>s :sort<CR> " map sort function to a key
 
 " Bind nohl
@@ -163,6 +167,22 @@ vnoremap > >gv  " better indentation
 vmap Q gq
 nmap Q gqap
 
+" functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" this function will restore search history and cursor position when removing
+" trailing whitespace with <Leader>W
+function! <SID>StripTrailingWhiteSpaces()
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " do the business
+    %s/\s\+$//e
+    " restore previous search history and cursor position
+    let @/=_s
+    call cursor(l,c)
+endfunction
+
 " plugin settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -189,6 +209,23 @@ let g:airline_section_z=''
 let g:airline_powerline_fonts = 1
 
 " Settings for jedi-vim
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 0
+let g:jedi#popup_on_dot = 1
+let g:jedi#popup_select_first = 1
 let g:jedi#use_splits_not_buffers = "right"
+
+" Better navigating through omnicomplete option list
+" See http://stackoverflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
+set completeopt=longest,menuone
+function! OmniPopup(action)
+ if pumvisible()
+        if a:action == 'j'
+            return "\<C-N>"
+        elseif a:action == 'k'
+            return "\<C-P>"
+        endif
+    endif
+    return a:action
+endfunction
+
+inoremap <silent><C-j> <C-R>=OmniPopup('j')<CR>
+inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
