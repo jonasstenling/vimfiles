@@ -156,7 +156,6 @@ noremap   <Up>     <NOP>
 noremap   <Down>   <NOP>
 noremap   <Left>   <NOP>
 noremap   <Right>  <NOP>
-
 " easier moving of code blocks
 " Try to go into visual mode (v), thenselect several lines of code here and
 " then press ``>`` several times.
@@ -166,6 +165,10 @@ vnoremap > >gv  " better indentation
 " easier formatting of paragraphs
 vmap Q gq
 nmap Q gqap
+
+" move between buffers
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
 
 " functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
