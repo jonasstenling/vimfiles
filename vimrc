@@ -15,7 +15,7 @@ set nocompatible
 " set tabs for yaml
 autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 " automatic reloading of .vimrc
-autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost vimrc source %
 " enable switching between buffers with changes not written
 set hidden
 " various defaults from http://http://stevelosh.com/blog/2010/09/coming-home-to-vim/
@@ -79,7 +79,7 @@ set fo+=j               " Remove a comment leader when joining comment lines.
 set pastetoggle=<F2>
 " Uncomment to automatically yank to system clipboard.
 " I prefer to do it manually when needed with "+y
-" set clipboard=unnamedplus
+set clipboard=unnamedplus
 
 " Make searching better
 set ignorecase    " case insensitive searching (unless specified)
@@ -170,6 +170,9 @@ nmap Q gqap
 nnoremap <Leader>b :bp<CR>
 nnoremap <Leader>f :bn<CR>
 
+" close buffer but not window
+nnoremap <Leader>c :bp\|bd #<CR>
+
 " functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -197,6 +200,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_flake8_args='--max-line-length=100'
 
 " settings for Nerdtree
 map <C-n> :NERDTreeToggle<CR>
@@ -208,7 +212,7 @@ set laststatus=2
 let g:airline_theme='powerlineish'
 let g:airline_left_sep=''
 let g:airline_right_sep=''
-let g:airline_section_z=''
+"let g:airline_section_z=''
 let g:airline_powerline_fonts = 1
 
 " Settings for jedi-vim
